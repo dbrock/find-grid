@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
+
+case ARGV.join(" ").gsub(/\s+/, " ")
+when /^(\d+) columns in (\d+)px$/
+  $n_columns = $1.to_i
+  $page_width = $2.to_i
+else
+  warn "usage: find-grid N-COLUMNS columns in PAGE-WIDTHpx"
+end
+
+$n_gutters = $n_columns - 1
+
+def solution? gutter_width
+  gutter_width < 50 and
+    ($page_width - $n_gutters * gutter_width) % $n_columns == 0
+end
+
+for gutter_width in 0 ... 50
+  if solution? gutter_width
+    column_width = ($page_width - gutter_width * $n_gutters) / $n_columns
+    puts "#$n_columns×#{column_width}px + #$n_gutters×#{gutter_width}px = #{$page_width}px"
+  end
+end
